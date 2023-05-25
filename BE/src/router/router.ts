@@ -1,11 +1,8 @@
 import {Router} from "express";
-import {productRouter} from "./product-router";
-import {userRouter} from "./user-router";
-import {orderRouter} from "./order-router";
+import productRouter from "./productRouter";
+import {userRouter} from "./userRouter";
 
-
-
-export const router = Router();
-router.use('/users', userRouter);
+const router = Router();
 router.use('/products', productRouter);
-router.use('/orders', orderRouter);
+router.use('/auth', userRouter);
+export default router;

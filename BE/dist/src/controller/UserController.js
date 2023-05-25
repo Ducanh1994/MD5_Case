@@ -3,38 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const UserService_1 = __importDefault(require("../service/UserService"));
+const userService_1 = __importDefault(require("../service/userService"));
 class UserController {
     constructor() {
-        this.getAll = async (req, res) => {
-            try {
-                let users = await UserService_1.default.getAll();
-                res.status(200).json(users);
-            }
-            catch (e) {
-                res.status(500).json(e.message);
-            }
+        this.register = async (req, res) => {
+            await this.userService.register(req.body);
+            res.status(201).json('Create user success');
         };
         this.login = async (req, res) => {
-            try {
-                let response = await this.userService.checkUser(req.body);
-                res.status(200).json(response);
-            }
-            catch (e) {
-                res.status(500).json(e.message);
-            }
+            let resultCheck = await this.userService.checkUser(req.body);
+            res.status(200).json(resultCheck);
         };
-        this.register = async (req, res) => {
-            try {
-                let response = await this.userService.register(req.body);
-                res.status(201).json(response);
-            }
-            catch (e) {
-                res.status(500).json(e.message);
-            }
+        this.getAll = async (req, res) => {
+            let users = await userService_1.default.getAll();
+            res.status(200).json(users);
         };
-        this.userService = UserService_1.default;
+        this.userService = userService_1.default;
     }
 }
 exports.default = new UserController();
-//# sourceMappingURL=UserController.js.map
+//# sourceMappingURL=userController.js.map
