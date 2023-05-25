@@ -9,38 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Product = void 0;
+exports.Order = void 0;
 const typeorm_1 = require("typeorm");
-const category_1 = require("./category");
 const orderDetail_1 = require("./orderDetail");
-let Product = class Product {
+const user_1 = require("./user");
+let Order = class Order {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Product.prototype, "id", void 0);
+], Order.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
-    __metadata("design:type", String)
-], Product.prototype, "name", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Order.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Product.prototype, "price", void 0);
+], Order.prototype, "totalMoney", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Product.prototype, "quantity", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => category_1.Category, (category) => category.products),
-    __metadata("design:type", category_1.Category)
-], Product.prototype, "category", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => orderDetail_1.OrderDetail, (cartDetail) => cartDetail.product),
+    (0, typeorm_1.OneToMany)(() => orderDetail_1.OrderDetail, (orderDetail) => orderDetail.order),
     __metadata("design:type", Array)
-], Product.prototype, "cartDetails", void 0);
-Product = __decorate([
+], Order.prototype, "orderDetails", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_1.User, (user) => user.orders),
+    __metadata("design:type", user_1.User)
+], Order.prototype, "user", void 0);
+Order = __decorate([
     (0, typeorm_1.Entity)()
-], Product);
-exports.Product = Product;
-//# sourceMappingURL=product.js.map
+], Order);
+exports.Order = Order;
+//# sourceMappingURL=order.js.map

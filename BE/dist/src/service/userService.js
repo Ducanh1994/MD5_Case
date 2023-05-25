@@ -8,13 +8,30 @@ const data_source_1 = require("../data-source");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth_1 = require("../middleware/auth");
+const order_1 = require("../enitity/order");
 class UserService {
     constructor() {
-        this.register = async (user) => {
-            console.log(user);
+        this.addUser = async (user) => {
             user.password = await bcrypt_1.default.hash(user.password, 10);
-            console.log(user.password);
+            user.role = 'user';
             return this.userRepository.save(user);
+        };
+        this.checkRegister = async (user) => {
+            let userFound = await this.userRepository.findOne({
+                where: {
+                    username: user.username
+                }
+            });
+            return userFound;
+        };
+        this.createNewOrder = async (userId) => {
+            let order = {
+                status: false,
+                totalMoney: 0,
+                userId: userId,
+                orderDetails: [],
+            };
+            return await this.orderRepository.save(order);
         };
         this.checkUser = async (user) => {
             let userFind = await this.userRepository.findOneBy({ username: user.username });
@@ -41,6 +58,7 @@ class UserService {
             }
         };
         this.userRepository = data_source_1.AppDataSource.getRepository(user_1.User);
+        this.orderRepository = data_source_1.AppDataSource.getRepository(order_1.Order);
     }
 }
 exports.default = new UserService();

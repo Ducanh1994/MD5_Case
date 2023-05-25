@@ -4,17 +4,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userService_1 = __importDefault(require("../service/userService"));
+const productService_1 = __importDefault(require("../service/productService"));
 class UserController {
     constructor() {
         this.register = async (req, res) => {
-            await this.userService.register(req.body);
-            res.status(201).json('Create user success');
+            let userCheck = await userService_1.default.checkRegister(req.body);
+            if (userCheck) {
+                res.status(200).json('User already existed!');
+            }
+            else if (!req.body.username || !req.body.password) {
+                res.status(200).json('Please fill all the information!');
+            }
+            else {
+                await userService_1.default.addUser(req.body);
+                await userService_1.default.createNewOrder(req.body.id);
+                res.status(201).json('Create User Success!');
+            }
         };
         this.login = async (req, res) => {
-            let resultCheck = await this.userService.checkUser(req.body);
+            let resultCheck = await userService_1.default.checkUser(req.body);
             res.status(200).json(resultCheck);
         };
-        this.userService = userService_1.default;
+        this.showProduct = async (req, res) => {
+            let products = await productService_1.default.getAll();
+            res.status(200).json(products);
+        };
     }
 }
 exports.default = new UserController();

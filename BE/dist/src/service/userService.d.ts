@@ -1,7 +1,10 @@
 declare class UserService {
     private userRepository;
+    private orderRepository;
     constructor();
-    register: (user: any) => Promise<any>;
+    addUser: (user: any) => Promise<any>;
+    checkRegister: (user: any) => Promise<any>;
+    createNewOrder: (userId: any) => Promise<any>;
     checkUser: (user: any) => Promise<"User is not exist" | {
         idUser: any;
         username: any;

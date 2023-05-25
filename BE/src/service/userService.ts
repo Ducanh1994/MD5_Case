@@ -3,20 +3,38 @@ import {AppDataSource} from "../data-source";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import {SECRET} from "../middleware/auth";
+import {Order} from "../enitity/order";
 
 class UserService {
     private userRepository;
+    private orderRepository;
 
     constructor() {
         this.userRepository = AppDataSource.getRepository(User);
+        this.orderRepository = AppDataSource.getRepository(Order);
+    }
+    addUser = async (user) => {
+        user.password = await bcrypt.hash(user.password,10);
+        user.role = 'user';
+        return this.userRepository.save(user);
+    }
+    checkRegister = async (user) => {
+        let userFound = await this.userRepository.findOne({
+            where: {
+                username: user.username
+            }
+        })
+        return userFound
     }
 
-
-    register = async (user) => {
-        console.log(user)
-        user.password = await bcrypt.hash(user.password, 10);
-        console.log(user.password)
-        return this.userRepository.save(user);
+    createNewOrder = async (userId) => {
+        let order = {
+            status: false,
+            totalMoney: 0,
+            userId: userId,
+            orderDetails: [],
+        }
+        return await this.orderRepository.save(order)
     }
 
 

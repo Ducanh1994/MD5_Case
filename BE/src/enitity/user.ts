@@ -1,11 +1,16 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-
+import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Order} from "./order";
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column({type: 'varchar'})
+    @Column()
     username: string;
-    @Column({type: 'varchar'})
-    password: string
+    @Column()
+    password: string;
+    @Column()
+    role: string;
+    @OneToMany(() => Order,(order) => order.user)
+    orders: Order[];
+
 }
