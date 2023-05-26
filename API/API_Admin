@@ -1,7 +1,10 @@
-Amin:
+Admin:
     GET: http://localhost:3001/admin/alluser
+
         -> Với quyền Admin có thể lấy danh sách user
+
     PUT: http://localhost:3001/admin/reRole
+
         body: raw: json:
         {
             "username": "ccc"
