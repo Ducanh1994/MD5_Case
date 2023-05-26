@@ -12,6 +12,9 @@ productRouter.use(auth);
 productRouter.get('/', productController.findAll);
 productRouter.post('/', adminAuth, productController.addProduct);
 productRouter.delete('/:id', adminAuth, productController.remove);
+
+productRouter.get('/:id', productController.findProductById);
+
 productRouter.put('/:id',adminAuth, productController.editProduct);
 productRouter.get('/:id', userAuth, productController.findProductById);
 productRouter.put('/:id', userAuth, userController.buyProduct);
