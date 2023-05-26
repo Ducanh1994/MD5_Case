@@ -10,6 +10,9 @@ class CategoryService {
 
     getAll = async () => {
         let categories = await this.categoryRepository.find();
+        if(!categories){
+            return 'Can not get categories'
+        }
         return categories;
     }
 

@@ -5,61 +5,45 @@ const data_source_1 = require("../data-source");
 class ProductService {
     constructor() {
         this.getAll = async () => {
-            let products = await this.productRepository.find({
-                relations: {
-                    category: true,
-                }
-            });
-            return products;
+            return await this.productRepository.find({ relations: ["category"] });
         };
         this.add = async (product) => {
             await this.productRepository.save(product);
         };
         this.remove = async (id) => {
-            await this.productRepository
-                .createQueryBuilder('Product')
-                .delete()
-                .from(product_1.Product)
-                .where("id = :id", { id: id })
-                .execute();
+            await this.productRepository.delete(id);
         };
         this.findProductById = async (id) => {
-            return await this.productRepository.findOne({
-                where: { id: id },
-                relations: { category: true }
-            });
+            return await this.productRepository.findOne(id, { relations: ["category"] });
+        };
+        this.findByName = async (search) => {
+            const sql = `SELECT p.id, p.name, p.price, p.quantity, p.image, c.name as nameCategory
+      FROM product_category pc
+      JOIN product p ON pc.idProduct = p.id
+      JOIN category c ON pc.idCategory = c.id
+      WHERE c.name LIKE '%${search}%'`;
+            return await this.productRepository.query(sql);
         };
         this.findByPrice = async (min, max) => {
-            let a = '';
-            if (!min && !max) {
-                a = '';
+            let whereClause = "";
+            if (min && max) {
+                whereClause = `WHERE p.price >= ${min} AND p.price <= ${max}`;
             }
-            else {
-                a = `where p.price >=${min} and p.price <= ${max}`;
+            else if (!min && max) {
+                whereClause = `WHERE p.price <= ${max}`;
             }
-            if (!min) {
-                a = `where p.price <= ${max}`;
+            else if (min && !max) {
+                whereClause = `WHERE p.price >= ${min}`;
             }
-            if (!max) {
-                a = `where p.price >= ${min}`;
-            }
-            let sql = `select p.id, p.name, p.price, p.quantity, p.image, c.name as nameCategory from product_category pc join product p on pc.idProduct = p.id join category c on pc.idCategory = c.id ${a}`;
-            let product = await this.productRepository.query(sql);
-            if (!product) {
-                return "Can not find by price";
-            }
-            return product;
+            const sql = `SELECT p.id, p.name, p.price, p.quantity, p.image, c.name as nameCategory
+      FROM product_category pc
+      JOIN product p ON pc.idProduct = p.id
+      JOIN category c ON pc.idCategory = c.id
+      ${whereClause}`;
+            return await this.productRepository.query(sql);
         };
         this.editProduct = async (id, product) => {
-            return await this.productRepository
-                .createQueryBuilder()
-                .update(product_1.Product)
-                .set({
-                name: product.name, price: product.price, quantity: product.quantity, image: product.image,
-                category: product.category
-            })
-                .where("id = :id", { id: id })
-                .execute();
+            await this.productRepository.update(id, product);
         };
         this.productRepository = data_source_1.AppDataSource.getRepository(product_1.Product);
     }

@@ -6,6 +6,9 @@ class CategoryService {
     constructor() {
         this.getAll = async () => {
             let categories = await this.categoryRepository.find();
+            if (!categories) {
+                return 'Can not get categories';
+            }
             return categories;
         };
         this.categoryRepository = data_source_1.AppDataSource.getRepository(category_1.Category);
