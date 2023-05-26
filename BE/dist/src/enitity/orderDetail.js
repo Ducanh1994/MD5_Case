@@ -30,7 +30,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], OrderDetail.prototype, "total", void 0);
+], OrderDetail.prototype, "totalPrice", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => order_1.Order, (order) => order.orderDetails),
     __metadata("design:type", order_1.Order)

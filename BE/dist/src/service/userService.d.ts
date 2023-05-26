@@ -1,6 +1,8 @@
 declare class UserService {
     private userRepository;
     private orderRepository;
+    private orderDetailRepository;
+    private productRepository;
     constructor();
     addUser: (user: any) => Promise<any>;
     checkRegister: (user: any) => Promise<any>;
@@ -10,6 +12,9 @@ declare class UserService {
         username: any;
         role: any;
     } | "Password is wrong">;
+    findOrderByUserId: (idUser: any) => Promise<any>;
+    findOrderDetailsByOrderId: (idOrder: any) => Promise<any>;
+    buyProduct: (idUser: any, idProduct: any) => Promise<any>;
 }
 declare const _default: UserService;
 export default _default;

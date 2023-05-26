@@ -2,8 +2,6 @@ import {Request, Response} from "express";
 import userService from "../service/userService";
 import productService from "../service/productService";
 class UserController {
-
-
     constructor() {}
 
     register = async (req:Request,res:Response) => {
@@ -29,6 +27,12 @@ class UserController {
     showProduct = async (req:Request,res:Response) => {
         let products = await productService.getAll();
         res.status(200).json(products)
+    }
+    buyProduct = async (req:Request,res:Response) => {
+        let idUser = req['decode'].userId;
+        let idProduct = req.params.id;
+        let orderFound = await userService.buyProduct(idUser,idProduct);
+        res.status(200).json(orderFound)
     }
 
 }

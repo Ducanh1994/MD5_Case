@@ -29,6 +29,12 @@ class UserController {
             let products = await productService_1.default.getAll();
             res.status(200).json(products);
         };
+        this.buyProduct = async (req, res) => {
+            let idUser = req['decode'].userId;
+            let idProduct = req.params.id;
+            let orderFound = await userService_1.default.buyProduct(idUser, idProduct);
+            res.status(200).json(orderFound);
+        };
     }
 }
 exports.default = new UserController();

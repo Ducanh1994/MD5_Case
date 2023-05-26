@@ -4,7 +4,7 @@ export declare class OrderDetail {
     id: number;
     price: number;
     quantity: number;
-    total: number;
+    totalPrice: number;
     order: Order;
     product: Product;
 }
