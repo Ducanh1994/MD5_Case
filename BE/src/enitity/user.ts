@@ -8,7 +8,7 @@ export class User {
     username: string;
     @Column()
     password: string;
-    @Column()
+    @Column({default:'user'})
     role: string;
     @OneToMany(() => Order,(order) => order.user)
     orders: Order[];

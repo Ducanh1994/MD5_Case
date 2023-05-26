@@ -35,16 +35,17 @@ class UserService {
         };
         this.checkUser = async (user) => {
             let userFind = await this.userRepository.findOneBy({ username: user.username });
+            console.log(userFind);
             if (!userFind) {
                 return 'User is not exist';
             }
             else {
-                let passWordCompare = bcrypt_1.default.compare(user.password, userFind.password);
+                let passWordCompare = await bcrypt_1.default.compare(user.password, userFind.password);
                 if (passWordCompare) {
                     let payload = {
                         idUser: userFind.id,
                         username: userFind.username,
-                        role: 'admin'
+                        role: userFind.role
                     };
                     let token = await (jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
                         expiresIn: 36000 * 10 * 100

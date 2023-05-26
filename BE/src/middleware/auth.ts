@@ -23,7 +23,7 @@ export const auth = (req, res, next) => {
                 message: 'You are anonymous'
             })
         }
-    } else {
+     } else {
         res.status(401).json({
             message: 'You are anonymous'
         })
