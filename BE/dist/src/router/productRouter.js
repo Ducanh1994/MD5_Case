@@ -12,11 +12,12 @@ const productRouter = (0, express_1.Router)();
 productRouter.use(auth_1.auth);
 productRouter.get("/", productController_1.default.findAll);
 productRouter.post("/", adminAuth_1.adminAuth, productController_1.default.addProduct);
-productRouter.get("/search", productController_1.default.search);
+productRouter.get("/name", productController_1.default.search);
 productRouter.delete("/:id", adminAuth_1.adminAuth, productController_1.default.remove);
 productRouter.get("/:id", userAuth_1.userAuth, productController_1.default.findProductById);
 productRouter.put("/:id", adminAuth_1.adminAuth, productController_1.default.editProduct);
 productRouter.get("/price", productController_1.default.findByPrice);
-productRouter.get('/search/category', productController_1.default.getCategories);
+productRouter.get('/categories', productController_1.default.getCategories);
+productRouter.post('');
 exports.default = productRouter;
 //# sourceMappingURL=productRouter.js.map
