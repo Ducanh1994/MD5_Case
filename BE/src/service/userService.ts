@@ -33,12 +33,12 @@ class UserService {
         return userFound
     }
 
-    createNewOrder = async (userId) => {
+     createNewOrder = async (user) => {
         let order = {
-            status: false,
+            status: "unpaid",
             totalMoney: 0,
-            userId: userId,
-            orderDetails: [],
+            user: user,
+            orderDetails: []
         }
         return await this.orderRepository.save(order)
     }
@@ -70,9 +70,9 @@ class UserService {
     }
     findOrderByUserId = async (idUser) => {
         let order = await this.orderRepository.find({
-            relations: ['orderDetail', 'orderDetail.order', 'orderDetail.product', 'user.orders'],
+            relations: ['orderDetails', 'orderDetail.order', 'orderDetail.product', 'user.orders'],
             where: {
-                status: false,
+                status: "unpaid",
                 user: {
                     id: idUser
                 }
@@ -92,7 +92,9 @@ class UserService {
     }
     buyProduct = async (idUser,idProduct) => {
         let orderFound = await this.findOrderByUserId(idUser);
+        console.log(orderFound,11)
         let idOrder = orderFound.id;
+        console.log(idOrder,11)
         let productFound = await this.productRepository.findProductById(idProduct);
         let quantityProductFound = productFound[0].quantity - 1;
         let priceProductFound = productFound[0].price;

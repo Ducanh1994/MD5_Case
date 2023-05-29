@@ -14,6 +14,6 @@ export class Product {
     quantity: number;
     @ManyToOne(() => Category,(category) => category.products)
     category: Category;
-    @OneToMany( () => OrderDetail,(cartDetail) => cartDetail.product)
-    cartDetails: OrderDetail[];
+    @OneToMany( () => OrderDetail,(orderDetail) => orderDetail.product)
+    orderDetails: OrderDetail[];
 }
