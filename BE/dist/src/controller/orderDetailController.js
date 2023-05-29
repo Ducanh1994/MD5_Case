@@ -11,8 +11,7 @@ class OrderDetailController {
             let userId = req['decode'].idUser;
             let order = await orderService_1.default.findOrderByUserId(userId);
             let orderId = order.id;
-            await orderDetailService_1.default.getPayment(orderId);
-            res.status(200).json("payment success!");
+            res.status(200).json(await orderDetailService_1.default.getPayment(orderId, userId));
         };
     }
 }

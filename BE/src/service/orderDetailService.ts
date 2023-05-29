@@ -1,13 +1,19 @@
 import {AppDataSource} from "../data-source";
 import {OrderDetail} from "../enitity/orderDetail";
-import productService from "./productService";
+import {Product} from "../enitity/product";
+import {Order} from "../enitity/order";
+
 
 
 class OrderDetailService {
     private orderDetailRepository;
+    private productRepository;
+    private orderRepository;
 
     constructor() {
         this.orderDetailRepository = AppDataSource.getRepository(OrderDetail);
+        this.productRepository = AppDataSource.getRepository(Product);
+        this.orderRepository = AppDataSource.getRepository(Order);
     }
 
     findOrderDetailByOrderId = async (orderId) => {
@@ -52,11 +58,32 @@ class OrderDetailService {
         }
     }
 
-    getPayment = async (orderId) => {
+    getPayment = async (orderId,userId) => {
+        await this.editOrder(orderId,userId);
         let orderDetails = await this.orderDetailRepository.find({
-            where: {order: orderId}
+            where: {
+                order: {
+                    id: orderId
+                }
+            },
+            relations: {order: true, product: true}
         })
-        console.log(orderDetails)
+        return orderDetails;
+    }
+    editOrder = async (orderId,userId) => {
+        await this.orderRepository
+            .createQueryBuilder()
+            .update(Order)
+            .set({ status:"paid" })
+            .where({ id: orderId })
+            .execute()
+        let newOrder = {
+            status: "unpaid",
+            totalMoney: 0,
+            orderDetails: [],
+            user: userId
+        };
+        await this.orderRepository.save(newOrder);
     }
 
 }
