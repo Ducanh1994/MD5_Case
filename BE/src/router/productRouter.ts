@@ -15,14 +15,11 @@ productRouter.post('/', adminAuth, productController.addProduct);
 productRouter.delete('/:id', adminAuth, productController.remove);
 productRouter.put('/:id',adminAuth, productController.editProduct);
 productRouter.get('/:id', userAuth, productController.findProductById);
-<<<<<<< HEAD
-productRouter.put('/order/:id', userAuth, userController.buyProduct);
-=======
 
 
 
 
 
 
->>>>>>> f34c59c223707fd75a0643f52ec465584e2ca813
+
 export default productRouter;

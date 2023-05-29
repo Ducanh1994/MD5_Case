@@ -20,6 +20,7 @@ class OrderDetailService {
         let existOrderDetails = await this.orderDetailRepository.find({
             where: {order: orderId, product: product.productId},
         });
+        console.log("ha ha",existOrderDetails)
         if (existOrderDetails) {
                 await this.orderDetailRepository
                         .createQueryBuilder()
