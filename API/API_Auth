@@ -1,0 +1,18 @@
+Auth:
+    *POST: http://localhost:3001/auth/register
+
+        body: raw: json:
+        {
+            "username": "hoang",
+            "password": "123"
+        }
+        -> Đăng ký một tài khoản với role user
+
+    *PUT: http://localhost:3001/auth/login
+
+        body: raw: json:
+        {
+            "username": "hoang",
+            "password": "123"
+        }
+        -> Đăng nhập vào một tài khoản

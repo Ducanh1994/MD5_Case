@@ -1,0 +1,20 @@
+Products:
+    GET: http://localhost:3001/products/
+
+        -> Lấy danh sách products
+
+    POST: http://localhost:3001/products/
+
+        -> Thêm một sản phẩm
+
+    DELETE: http://localhost:3001/products/:id
+
+        -> Xóa một sản phẩm
+
+    GET: http://localhost:3001/products/:id
+
+            -> Xem một sản phẩm
+
+    PUT: http://localhost:3001/products/:id
+
+            -> Sửa một sản phẩm
