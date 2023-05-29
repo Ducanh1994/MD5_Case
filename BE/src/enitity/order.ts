@@ -1,22 +1,18 @@
-// order.ts
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { OrderDetail } from './orderDetail';
-import { User } from './user';
+import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {OrderDetail} from "./orderDetail";
+import {User} from "./user";
+
 
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Column()
-    status: boolean;
-
-    @Column()
+    @Column({ default: "unpaid" })
+    status: string;
+    @Column({ default: 0 })
     totalMoney: number;
-
-    @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order)
+    @OneToMany(() => OrderDetail,(orderDetail) => orderDetail.order)
     orderDetails: OrderDetail[];
-
-    @ManyToOne(() => User, (user) => user.orders)
+    @ManyToOne(() => User,(user) => user.orders)
     user: User;
 }

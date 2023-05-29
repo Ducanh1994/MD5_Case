@@ -1,91 +1,62 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 import productService from "../service/productService";
-import categoryService from "../service/CategoryService";
+import orderService from "../service/orderService";
+import orderDetailService from "../service/orderDetailService";
 
 class ProductController {
-    constructor() {}
 
-    async findAll(req: Request, res: Response) {
-        try {
-            const listProduct = await productService.getAll();
-            res.status(200).json(listProduct);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
+    constructor() {
+    }
+
+    findAll = async (req: Request, res: Response) => {
+        let listProduct = await productService.getAll();
+        res.status(200).json(listProduct)
+    }
+
+
+    addProduct = async (req: Request, res: Response) => {
+        await productService.add(req.body);
+        if (!req.body.name) {
+            res.status(400).json({
+                message: 'name missing'
+            })
+            res.end();
+        } else {
+            res.status(201).json({
+                message: 'OK'
+            })
         }
     }
 
-    async addProduct(req: Request, res: Response) {
-        try {
-            if (!req.body.name) {
-                return res.status(400).json({ message: "Name missing" });
-            }
 
-            await productService.add(req.body);
-            res.status(201).json({ message: "OK" });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+    remove = (req: Request, res: Response) => {
+        let id = req.params.id;
+        productService.remove(id);
+        res.status(200).json({
+            message: 'Delete success'
+        })
+    }
+    findProductById = async (req: Request, res: Response) => {
+        let id = req.params.id;
+        let product = await productService.findProductById(id);
+        res.status(200).json(product)
+    }
+    editProduct = async (req: Request, res: Response) => {
+        let id = req.params.id;
+        let product = req.body;
+        await productService.editProduct(id, product);
+        res.status(200).json({
+            message: 'Edit success'
+        })
     }
 
-    async search(req: Request, res: Response) {
-        try {
-            const search = req.query.search;
-            const response = await productService.findByName(search);
-            res.status(200).json(response);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
-    async remove(req: Request, res: Response) {
-        try {
-            const id = req.params.id;
-            await productService.remove(id);
-            res.status(200).json({ message: "Delete success" });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
-    async findProductById(req: Request, res: Response) {
-        try {
-            const id = req.params.id;
-            const product = await productService.findProductById(id);
-            res.status(200).json(product);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
-    async editProduct(req: Request, res: Response) {
-        try {
-            const id = req.params.id;
-            const product = req.body;
-            await productService.editProduct(id, product);
-            res.status(200).json({ message: "Edit success" });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
-    async findByPrice(req: Request, res: Response) {
-        try {
-            const min = req.query.min;
-            const max = req.query.max;
-            const response = await productService.findByPrice(min, max);
-            res.status(200).json(response);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    }
-
-    getCategories = async (req: Request, res: Response) => {
-        try{
-            let response = await categoryService.getAll();
-            res.status(200).json(response)
-        } catch (e) {
-            res.status(500).json(e.message)
-        }
+    buyProduct = async (req: Request, res: Response) => {
+        let userId = req['decode'].idUser;
+        let order = await orderService.findOrderByUserId(userId);
+        let orderId = order.id;
+        let product = req.body;
+        await orderDetailService.addOrderDetail(orderId, product)
+        res.status(200).json("buy success!")
     }
 }
 
