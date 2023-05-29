@@ -1,0 +1,10 @@
+Order:
+    POST: http://localhost:3001/order-detail/add-detail
+
+    req.body:raw:JSON
+    {
+        "productId": 4,
+        "price" : 12,
+        "quantity": 10
+        }
+    -> Thêm một sản phẩm vào giỏ hàng
