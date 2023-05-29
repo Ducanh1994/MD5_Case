@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const productService_1 = __importDefault(require("../service/productService"));
+const orderService_1 = __importDefault(require("../service/orderService"));
+const orderDetailService_1 = __importDefault(require("../service/orderDetailService"));
 class ProductController {
     constructor() {
         this.findAll = async (req, res) => {
@@ -43,6 +45,14 @@ class ProductController {
             res.status(200).json({
                 message: 'Edit success'
             });
+        };
+        this.buyProduct = async (req, res) => {
+            let userId = req['decode'].idUser;
+            let order = await orderService_1.default.findOrderByUserId(userId);
+            let orderId = order.id;
+            let product = req.body;
+            await orderDetailService_1.default.addOrderDetail(orderId, product);
+            res.status(200).json("buy success!");
         };
     }
 }

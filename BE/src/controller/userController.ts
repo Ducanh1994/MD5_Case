@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import userService from "../service/userService";
-import productService from "../service/productService";
+import orderService from "../service/orderService";
 class UserController {
     constructor() {}
 
@@ -13,8 +13,8 @@ class UserController {
             res.status(200).json('Please fill all the information!')
         }
         else {
-            let newOrder = await userService.createNewOrder(req.body);
             await userService.addUser(req.body);
+            await orderService.createNewOrder(req.body);
             res.status(201).json('Create User Success!');
         }
     }
@@ -23,16 +23,6 @@ class UserController {
         let resultCheck = await userService.checkUser(req.body);
         res.status(200).json(resultCheck);
 
-    }
-    showProduct = async (req:Request,res:Response) => {
-        let products = await productService.getAll();
-        res.status(200).json(products)
-    }
-    buyProduct = async (req:Request,res:Response) => {
-        let idUser = req['decode'].idUser;
-        let idProduct = req.params.id;
-        let orderFound = await userService.buyProduct(idUser,idProduct);
-        res.status(200).json(orderFound)
     }
 
 }

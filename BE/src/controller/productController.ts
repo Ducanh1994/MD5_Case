@@ -1,10 +1,12 @@
 import {Request, Response} from "express";
 import productService from "../service/productService";
-import categoryService from "../service/CategoryService";
+import orderService from "../service/orderService";
+import orderDetailService from "../service/orderDetailService";
 
 class ProductController {
 
-    constructor() {}
+    constructor() {
+    }
 
     findAll = async (req: Request, res: Response) => {
         let listProduct = await productService.getAll();
@@ -46,6 +48,15 @@ class ProductController {
         res.status(200).json({
             message: 'Edit success'
         })
+    }
+
+    buyProduct = async (req: Request, res: Response) => {
+        let userId = req['decode'].idUser;
+        let order = await orderService.findOrderByUserId(userId);
+        let orderId = order.id;
+        let product = req.body;
+        await orderDetailService.addOrderDetail(orderId, product)
+        res.status(200).json("buy success!")
     }
 }
 
