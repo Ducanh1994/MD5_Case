@@ -13,8 +13,8 @@ class UserController {
             res.status(200).json('Please fill all the information!')
         }
         else {
+            let newOrder = await userService.createNewOrder(req.body);
             await userService.addUser(req.body);
-            await userService.createNewOrder(req.body.id);
             res.status(201).json('Create User Success!');
         }
     }
@@ -29,7 +29,7 @@ class UserController {
         res.status(200).json(products)
     }
     buyProduct = async (req:Request,res:Response) => {
-        let idUser = req['decode'].userId;
+        let idUser = req['decode'].idUser;
         let idProduct = req.params.id;
         let orderFound = await userService.buyProduct(idUser,idProduct);
         res.status(200).json(orderFound)

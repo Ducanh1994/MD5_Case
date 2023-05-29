@@ -15,7 +15,7 @@ productRouter.delete('/:id', adminAuth, productController.remove);
 
 productRouter.get('/:id', productController.findProductById);
 
-productRouter.put('/:id',adminAuth, productController.editProduct);
+// productRouter.put('/:id',adminAuth, productController.editProduct);
 productRouter.get('/:id', userAuth, productController.findProductById);
 productRouter.put('/order/:id', userAuth, userController.buyProduct);
 export default productRouter;

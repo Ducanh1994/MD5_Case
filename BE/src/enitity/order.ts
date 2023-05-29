@@ -7,9 +7,9 @@ import {User} from "./user";
 export class Order {
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
-    status: boolean;
-    @Column()
+    @Column({ default: "unpaid" })
+    status: string;
+    @Column({ default: 0 })
     totalMoney: number;
     @OneToMany(() => OrderDetail,(orderDetail) => orderDetail.order)
     orderDetails: OrderDetail[];
