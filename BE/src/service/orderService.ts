@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {User} from "../enitity/user";
 import {AppDataSource} from "../data-source";
 import bcrypt from 'bcrypt'
@@ -66,3 +67,32 @@ class UserService {
 }
 
 export default new UserService();
+=======
+import {AppDataSource} from "../data-source";
+import {Order} from "../enitity/order";
+
+class OrderService {
+    private orderRepository;
+
+    constructor() {
+        this.orderRepository = AppDataSource.getRepository(Order);
+    }
+     createNewOrder = async (user) => {
+        let order = {
+            status: "unpaid",
+            totalMoney: 0,
+            user: user,
+            orderDetails: []
+        }
+        return await this.orderRepository.save(order)
+    }
+    findOrderByUserId = async (userId) => {
+       return await this.orderRepository.findOne({
+           where: {user: userId, status: "unpaid"},
+           relations: {user: true}
+       })
+    }
+
+}
+export default new OrderService();
+>>>>>>> f34c59c223707fd75a0643f52ec465584e2ca813

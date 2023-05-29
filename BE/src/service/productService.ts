@@ -1,6 +1,6 @@
 import {Product} from "../enitity/product";
 import {AppDataSource} from "../data-source";
-import {ILike, Like} from "typeorm";
+
 
 class ProductService {
     private productRepository;
