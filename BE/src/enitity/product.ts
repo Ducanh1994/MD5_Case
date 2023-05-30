@@ -1,3 +1,4 @@
+//product-model.js
 import {Column, Entity,ManyToOne,OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Category} from './category';
 import {OrderDetail} from "./orderDetail";

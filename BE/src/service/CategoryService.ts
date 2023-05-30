@@ -15,6 +15,10 @@ class CategoryService {
         }
         return categories;
     }
+
+    saveCategory = async (category) => {
+        return this.categoryRepository.save(category);
+    }
 }
 
 export default new CategoryService();

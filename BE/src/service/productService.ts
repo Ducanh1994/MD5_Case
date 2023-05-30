@@ -1,3 +1,4 @@
+//productService.ts
 import {Product} from "../enitity/product";
 import {AppDataSource} from "../data-source";
 
@@ -34,6 +35,25 @@ class ProductService {
             where: {id: id},
             relations: {category: true}
         })
+    }
+
+    findByCategoryId = async (categoryId) => {
+        const products = await this.productRepository.find({
+            where: {
+                category: { id: categoryId }, // Filter based on the category ID
+            },
+            relations: ["category"], // Include the "category" relationship
+        });
+        return products;
+    }
+
+    findByNameProduct = async (search)=> {
+        let sql =`select p.id, p.name, p.price, p.quantity, p.image, c.name as nameCategory from product_category pc join product p on pc.idProduct = p.id join category c on pc.idCategory = c.id where p.name like '%${search}%'`;
+        let product = await this.productRepository.query(sql);
+        if(!product){
+            return "Can not find by name";
+        }
+        return product;
     }
 
     findByPrice = async (min,max)=> {

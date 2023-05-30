@@ -38,6 +38,11 @@ class ProductController {
             let product = await productService_1.default.findProductById(id);
             res.status(200).json(product);
         };
+        this.findByCategoryId = async (req, res) => {
+            let categoryId = req.params.categoryId;
+            let products = await productService_1.default.findByCategoryId(categoryId);
+            res.status(200).json(products);
+        };
         this.editProduct = async (req, res) => {
             let id = req.params.id;
             let product = req.body;
@@ -45,6 +50,16 @@ class ProductController {
             res.status(200).json({
                 message: 'Edit success'
             });
+        };
+        this.findByNameProduct = async (req, res) => {
+            try {
+                let search = req.query.search;
+                let response = await productService_1.default.findByNameProduct(search);
+                res.status(200).json(response);
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
         };
         this.findByPrice = async (req, res) => {
             try {

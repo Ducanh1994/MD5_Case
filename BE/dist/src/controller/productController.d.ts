@@ -5,7 +5,9 @@ declare class ProductController {
     addProduct: (req: Request, res: Response) => Promise<void>;
     remove: (req: Request, res: Response) => void;
     findProductById: (req: Request, res: Response) => Promise<void>;
+    findByCategoryId: (req: Request, res: Response) => Promise<void>;
     editProduct: (req: Request, res: Response) => Promise<void>;
+    findByNameProduct: (req: Request, res: Response) => Promise<void>;
     findByPrice: (req: Request, res: Response) => Promise<void>;
     buyProduct: (req: Request, res: Response) => Promise<void>;
 }

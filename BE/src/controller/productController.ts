@@ -1,3 +1,4 @@
+//productController.ts
 import {Request, Response} from "express";
 import productService from "../service/productService";
 import orderService from "../service/orderService";
@@ -41,6 +42,12 @@ class ProductController {
         let product = await productService.findProductById(id);
         res.status(200).json(product)
     }
+
+    findByCategoryId = async (req: Request, res: Response) => {
+            let categoryId = req.params.categoryId;
+            let products = await productService.findByCategoryId(categoryId);
+            res.status(200).json(products);
+    }
     editProduct = async (req: Request, res: Response) => {
         let id = req.params.id;
         let product = req.body;
@@ -48,6 +55,17 @@ class ProductController {
         res.status(200).json({
             message: 'Edit success'
         })
+    }
+
+    findByNameProduct = async (req: Request, res: Response) => {
+        try{
+            let search = req.query.search;
+            let response = await productService.findByNameProduct(search);
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+
     }
 
     findByPrice = async (req: Request, res: Response) => {
