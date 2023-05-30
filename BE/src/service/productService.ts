@@ -2,7 +2,6 @@
 import {Product} from "../enitity/product";
 import {AppDataSource} from "../data-source";
 
-
 class ProductService {
     private productRepository;
 

@@ -1,4 +1,4 @@
-//user.ts
+//user-model.ts
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Order} from "./order";
 @Entity()
@@ -9,6 +9,8 @@ export class User {
     username: string;
     @Column()
     password: string;
+    @Column()
+    image: string;
     @Column({default:'user'})
     role: string;
     @OneToMany(() => Order,(order) => order.user)

@@ -24,6 +24,10 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "name", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar' }),
+    __metadata("design:type", String)
+], Product.prototype, "image", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Product.prototype, "price", void 0);

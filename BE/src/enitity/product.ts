@@ -9,6 +9,8 @@ export class Product {
     id: number;
     @Column({type:'varchar'})
     name: string;
+    @Column({type:'varchar'})
+    image: string;
     @Column()
     price: number;
     @Column()
