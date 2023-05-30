@@ -13,6 +13,18 @@ class OrderDetailController {
             let orderId = order.id;
             res.status(200).json(await orderDetailService_1.default.getPayment(orderId, userId));
         };
+        this.deleteOrderDetail = async (req, res) => {
+            let orderDetailId = req.params.id;
+            await orderDetailService_1.default.deleteOrderDetail(orderDetailId);
+            res.status(200).json("delete order detail success!");
+        };
+        this.getHistory = async (req, res) => {
+            let userId = req['decode'].idUser;
+            let order = await orderService_1.default.findAllOrderByUserId(userId);
+            console.log(order);
+            let orderId = order.id;
+            res.status(200).json(await orderDetailService_1.default.getHistory(orderId));
+        };
     }
 }
 exports.default = new OrderDetailController();

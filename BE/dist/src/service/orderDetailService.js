@@ -75,6 +75,27 @@ class OrderDetailService {
             };
             await this.orderRepository.save(newOrder);
         };
+        this.deleteOrderDetail = async (orderId) => {
+            await this.orderDetailRepository
+                .createQueryBuilder()
+                .delete()
+                .from(orderDetail_1.OrderDetail)
+                .where({ id: orderId })
+                .execute();
+        };
+        this.getHistory = async (orderId) => {
+            return await this.orderDetailRepository.find({
+                where: {
+                    order: {
+                        id: orderId,
+                        status: "paid"
+                    },
+                },
+                relation: {
+                    order: true, product: true
+                }
+            });
+        };
         this.orderDetailRepository = data_source_1.AppDataSource.getRepository(orderDetail_1.OrderDetail);
         this.productRepository = data_source_1.AppDataSource.getRepository(product_1.Product);
         this.orderRepository = data_source_1.AppDataSource.getRepository(order_1.Order);

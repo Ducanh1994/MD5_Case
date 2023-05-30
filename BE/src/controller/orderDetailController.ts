@@ -11,6 +11,18 @@ class OrderDetailController {
         let orderId = order.id;
         res.status(200).json(await orderDetailService.getPayment(orderId,userId))
     }
+    deleteOrderDetail = async (req: Request, res: Response) => {
+        let orderDetailId = req.params.id;
+        await orderDetailService.deleteOrderDetail(orderDetailId);
+        res.status(200).json("delete order detail success!")
+    }
+    getHistory = async  (req: Request, res: Response) => {
+        let userId = req['decode'].idUser;
+        let order = await orderService.findAllOrderByUserId(userId);
+        console.log(order)
+        let orderId = order.id;
+        res.status(200).json(await orderDetailService.getHistory(orderId))
+    }
 
 }
 
