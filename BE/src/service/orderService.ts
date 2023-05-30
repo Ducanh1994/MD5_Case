@@ -22,6 +22,12 @@ class OrderService {
            relations: {user: true}
        })
     }
+    findAllOrderByUserId = async (userId) => {
+        return await this.orderRepository.find({
+            where: {user: userId },
+            relations: {user: true}
+        })
+    }
 
 }
 export default new OrderService();

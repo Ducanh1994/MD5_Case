@@ -7,6 +7,8 @@ declare class OrderDetailService {
     addOrderDetail: (orderId: any, product: any) => Promise<void>;
     getPayment: (orderId: any, userId: any) => Promise<any>;
     editOrder: (orderId: any, userId: any) => Promise<void>;
+    deleteOrderDetail: (orderId: any) => Promise<void>;
+    getHistory: (orderId: any) => Promise<any>;
 }
 declare const _default: OrderDetailService;
 export default _default;

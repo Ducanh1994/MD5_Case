@@ -13,5 +13,7 @@ orderDetailRouter.use(auth_1.auth);
 orderDetailRouter.use(userAuth_1.userAuth);
 orderDetailRouter.post('/add-detail', productController_1.default.buyProduct);
 orderDetailRouter.get('/payment-detail', orderDetailController_1.default.getPayment);
+orderDetailRouter.delete('/delete-detail/:id', orderDetailController_1.default.deleteOrderDetail);
+orderDetailRouter.get('/detail/history', orderDetailController_1.default.getHistory);
 exports.default = orderDetailRouter;
 //# sourceMappingURL=orderDetailRouter.js.map

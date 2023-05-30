@@ -85,6 +85,27 @@ class OrderDetailService {
         };
         await this.orderRepository.save(newOrder);
     }
+    deleteOrderDetail = async (orderId) => {
+        await this.orderDetailRepository
+            .createQueryBuilder()
+            .delete()
+            .from(OrderDetail)
+            .where({ id: orderId })
+            .execute()
+    }
+    getHistory = async (orderId) => {
+        return await this.orderDetailRepository.find({
+            where: {
+                order : {
+                    id: orderId,
+                    status: "paid"
+                },
+            },
+            relation: {
+                order: true, product: true
+            }
+        })
+    }
 
 }
 

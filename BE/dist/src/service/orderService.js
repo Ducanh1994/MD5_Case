@@ -19,6 +19,12 @@ class OrderService {
                 relations: { user: true }
             });
         };
+        this.findAllOrderByUserId = async (userId) => {
+            return await this.orderRepository.find({
+                where: { user: userId },
+                relations: { user: true }
+            });
+        };
         this.orderRepository = data_source_1.AppDataSource.getRepository(order_1.Order);
     }
 }
