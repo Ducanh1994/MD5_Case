@@ -15,7 +15,6 @@ class CategoryService {
         }
         return categories;
     }
-
 }
 
 export default new CategoryService();

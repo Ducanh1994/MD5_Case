@@ -50,6 +50,18 @@ class ProductController {
         })
     }
 
+    findByPrice = async (req: Request, res: Response) => {
+        try{
+            let min = req.query.min;
+            let max = req.query.max;
+            let response = await productService.findByPrice(min,max);
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+
+    }
+
     buyProduct = async (req: Request, res: Response) => {
         let userId = req['decode'].idUser;
         let order = await orderService.findOrderByUserId(userId);

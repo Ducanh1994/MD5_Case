@@ -46,6 +46,17 @@ class ProductController {
                 message: 'Edit success'
             });
         };
+        this.findByPrice = async (req, res) => {
+            try {
+                let min = req.query.min;
+                let max = req.query.max;
+                let response = await productService_1.default.findByPrice(min, max);
+                res.status(200).json(response);
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
+        };
         this.buyProduct = async (req, res) => {
             let userId = req['decode'].idUser;
             let order = await orderService_1.default.findOrderByUserId(userId);

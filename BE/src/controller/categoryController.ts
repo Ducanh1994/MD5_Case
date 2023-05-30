@@ -1,18 +1,17 @@
 import {Request, Response} from "express";
-import productService from "../service/productService";
+import categoryService from "../service/CategoryService";
 
-class ProductController {
-    private productService;
+class CategoryController {
+    private categoryService;
 
     constructor() {
-        this.productService = productService;
+        this.categoryService = categoryService;
     }
 
-    findAll = async (req: Request, res: Response) => {
-        let listProduct = await this.productService.getAll();
+    getAll = async (req: Request, res: Response) => {
+        let listProduct = await this.categoryService.getAll();
         res.render('index', {products: listProduct});
     }
-
 }
 
-export default new ProductController();
+export default new CategoryController();
