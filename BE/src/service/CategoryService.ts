@@ -8,9 +8,8 @@ class CategoryService {
         this.categoryRepository = AppDataSource.getRepository(Category);
     }
 
-    getAll = async () => {
-        let categories = await this.categoryRepository.find();
-        return categories;
+    getAllCategory = async () => {
+        return await this.categoryRepository.find();
     }
 
 }
