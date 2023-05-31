@@ -5,7 +5,7 @@ import productController from "../controller/productController";
 import orderDetailController from "../controller/orderDetailController";
 
 
-const orderDetailRouter = Router();
+const  orderDetailRouter = Router();
 orderDetailRouter.use(auth);
 orderDetailRouter.use(userAuth);
 orderDetailRouter.post('/add-detail', productController.buyProduct);
