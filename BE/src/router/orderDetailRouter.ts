@@ -8,7 +8,7 @@ import orderDetailController from "../controller/orderDetailController";
 const orderDetailRouter = Router();
 orderDetailRouter.use(auth);
 orderDetailRouter.use(userAuth);
-orderDetailRouter.post('/add-detail', productController.buyProduct);
+orderDetailRouter.post('/add/detail/new', productController.buyProduct);
 orderDetailRouter.get('/payment/detail', orderDetailController.getPayment);
 orderDetailRouter.delete('/delete-detail/:id', orderDetailController.deleteOrderDetail);
 orderDetailRouter.get('/history/detail', orderDetailController.getHistory);
