@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import productService from "../service/productService";
-import categoryService from "../service/CategoryService";
+import categoryService from "../service/categoryService";
 
 class CategoryController {
     private productService;

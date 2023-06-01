@@ -55,8 +55,9 @@ class ProductController {
         let order = await orderService.findOrderByUserId(userId);
         let orderId = order.id;
         let product = req.body;
-        await orderDetailService.addOrderDetail(orderId, product)
-        res.status(200).json("buy success!")
+        await orderDetailService.addOrderDetail(orderId, product);
+        let orderDetails = await orderDetailService.findOrderDetails(orderId)
+        res.status(200).json(orderDetails)
     }
 }
 

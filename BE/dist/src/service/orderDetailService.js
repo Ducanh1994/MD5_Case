@@ -96,6 +96,20 @@ class OrderDetailService {
                 }
             });
         };
+        this.findOrderDetails = async (orderId) => {
+            return await this.orderDetailRepository.find({
+                relations: {
+                    order: true,
+                    product: true
+                },
+                where: {
+                    order: {
+                        id: orderId,
+                        status: "unpaid"
+                    },
+                },
+            });
+        };
         this.orderDetailRepository = data_source_1.AppDataSource.getRepository(orderDetail_1.OrderDetail);
         this.productRepository = data_source_1.AppDataSource.getRepository(product_1.Product);
         this.orderRepository = data_source_1.AppDataSource.getRepository(order_1.Order);
