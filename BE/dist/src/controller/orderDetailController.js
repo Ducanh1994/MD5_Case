@@ -25,6 +25,13 @@ class OrderDetailController {
             let orderId = order.id;
             res.status(200).json(await orderDetailService_1.default.getHistory(orderId));
         };
+        this.getOrderDetails = async (req, res) => {
+            let userId = req['decode'].idUser;
+            let order = await orderService_1.default.findAllOrderByUserId(userId);
+            let orderId = order.id;
+            let cart = await orderDetailService_1.default.findOrderDetails(orderId);
+            res.status(200).json(cart);
+        };
     }
 }
 exports.default = new OrderDetailController();

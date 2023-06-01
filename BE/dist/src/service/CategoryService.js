@@ -11,4 +11,4 @@ class CategoryService {
     }
 }
 exports.default = new CategoryService();
-//# sourceMappingURL=CategoryService.js.map
+//# sourceMappingURL=categoryService.js.map

@@ -106,6 +106,20 @@ class OrderDetailService {
             }
         })
     }
+    findOrderDetails = async (orderId) => {
+        return await this.orderDetailRepository.find({
+            relations: {
+                order: true,
+                product: true
+            },
+            where: {
+                order: {
+                    id: orderId,
+                    status: "unpaid"
+                },
+            },
+        })
+    }
 
 }
 
