@@ -6,10 +6,29 @@ const product_1 = require("../enitity/product");
 const order_1 = require("../enitity/order");
 class OrderDetailService {
     constructor() {
+        this.findOrder = async () => {
+            return await this.orderDetailRepository.find({
+                relations: { order: true, product: true }
+            });
+        };
         this.findOrderDetailByOrderId = async (orderId) => {
             return await this.orderDetailRepository.findOne({
                 where: { orderId: orderId },
                 relations: { order: true, product: true }
+            });
+        };
+        this.findOrderDetails = async (orderId) => {
+            return await this.orderDetailRepository.find({
+                relations: {
+                    order: true,
+                    product: true
+                },
+                where: {
+                    order: {
+                        id: orderId,
+                        status: "unpaid"
+                    },
+                },
             });
         };
         this.addOrderDetail = async (orderId, product) => {
@@ -61,10 +80,22 @@ class OrderDetailService {
             return orderDetails;
         };
         this.editOrder = async (orderId, userId) => {
+            let totalMoney = 0;
+            let orderDetails = await this.orderDetailRepository.find({
+                where: {
+                    order: {
+                        id: orderId
+                    }
+                },
+                relations: { order: true, product: true }
+            });
+            orderDetails.map(item => {
+                totalMoney += item.totalPrice;
+            });
             await this.orderRepository
                 .createQueryBuilder()
                 .update(order_1.Order)
-                .set({ status: "paid" })
+                .set({ status: "paid", totalMoney: totalMoney })
                 .where({ id: orderId })
                 .execute();
             let newOrder = {
@@ -91,23 +122,9 @@ class OrderDetailService {
                         status: "paid"
                     },
                 },
-                relation: {
+                relations: {
                     order: true, product: true
                 }
-            });
-        };
-        this.findOrderDetails = async (orderId) => {
-            return await this.orderDetailRepository.find({
-                relations: {
-                    order: true,
-                    product: true
-                },
-                where: {
-                    order: {
-                        id: orderId,
-                        status: "unpaid"
-                    },
-                },
             });
         };
         this.orderDetailRepository = data_source_1.AppDataSource.getRepository(orderDetail_1.OrderDetail);
