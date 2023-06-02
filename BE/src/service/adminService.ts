@@ -14,7 +14,7 @@ class AdminService {
     constructor() {
         this.userRepository = AppDataSource.getRepository(User);
     }
-    getAllAccount = async () => {
+     getAllAccount = async () => {
         let allUser = await this.userRepository.find();
         return allUser;
     }
