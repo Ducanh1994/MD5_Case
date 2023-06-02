@@ -15,8 +15,11 @@ class UserService {
 
     }
     addUser = async (user) => {
-        user.password = await bcrypt.hash(user.password,10);
+        if(user.password ){
+            user.password = await bcrypt.hash(user.password,10);
+        }
         user.role = 'user';
+        console.log(user)
         return this.userRepository.save(user);
     }
     checkRegister = async (user) => {
@@ -50,7 +53,7 @@ class UserService {
         }
     }
     addUserGmail = async (user) => {
-        user.password = await bcrypt.hash(user.password,10);
+        user.password = null;
         user.role = 'user';
         return (await this.userRepository.save(user));
     }
@@ -72,10 +75,14 @@ class UserService {
         if (!userFound) {
             return undefined
         } else {
-            let passWordCompare = await bcrypt.compare(user.password, userFound.password);
-            if (passWordCompare) {
-                return userFound
+            if(user.password){
+                let passWordCompare = await bcrypt.compare(user.password, userFound.password);
+                if (passWordCompare) {
+                    return userFound
+                }
+                return {message:"sai pw"}
             }
+            
         }
     }
 
