@@ -19,7 +19,6 @@ class OrderDetailController {
     getHistory = async  (req: Request, res: Response) => {
         let userId = req['decode'].idUser;
         let order = await orderService.findAllOrderByUserId(userId);
-        console.log(order)
         let orderId = order.id;
         res.status(200).json(await orderDetailService.getHistory(orderId))
     }
