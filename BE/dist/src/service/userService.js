@@ -49,7 +49,7 @@ class UserService {
         this.addUserGmail = async (user) => {
             user.password = await bcrypt_1.default.hash(user.password, 10);
             user.role = 'user';
-            await this.userRepository.save(user);
+            return (await this.userRepository.save(user));
         };
         this.loginAhead = async (user) => {
             let payload = {
@@ -64,8 +64,16 @@ class UserService {
             return payload;
         };
         this.findUser = async (user) => {
-            let userFound = await this.userRepository.findOneBy({ username: user.username, password: user.password });
-            return userFound;
+            let userFound = await this.userRepository.findOneBy({ username: user.username });
+            if (!userFound) {
+                return undefined;
+            }
+            else {
+                let passWordCompare = await bcrypt_1.default.compare(user.password, userFound.password);
+                if (passWordCompare) {
+                    return userFound;
+                }
+            }
         };
         this.userRepository = data_source_1.AppDataSource.getRepository(user_1.User);
     }

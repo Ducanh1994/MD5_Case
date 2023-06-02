@@ -69,7 +69,7 @@ class ProductController {
         }
     }
     findByCategoryId = async (req: Request, res: Response) => {
-        let categoryId = req.params.categoryId;
+        let categoryId = req.params.id;
         let products = await productService.findByCategoryId(categoryId);
         res.status(200).json(products);
     }

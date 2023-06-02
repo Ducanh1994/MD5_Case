@@ -8,7 +8,7 @@ declare class UserService {
         username: any;
         role: any;
     } | "Password is wrong">;
-    addUserGmail: (user: any) => Promise<void>;
+    addUserGmail: (user: any) => Promise<any>;
     loginAhead: (user: any) => Promise<{
         idUser: any;
         username: any;
