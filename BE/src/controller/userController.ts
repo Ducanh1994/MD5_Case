@@ -9,10 +9,11 @@ class UserController {
     register = async (req: Request, res: Response) => {
         let userCheck = await userService.checkRegister(req.body);
         if (userCheck) {
-            res.status(400).json('User already existed!')
+            res.status(200).json('User already existed!')
         } else if (!req.body.username || !req.body.password) {
-            res.status(401).json('Please fill all the information!')
+            res.status(200).json('Please fill all the information!')
         } else {
+            console.log(req.body)
             await userService.addUser(req.body);
             await orderService.createNewOrder(req.body);
             res.status(201).json('Create User Success!');
@@ -24,6 +25,7 @@ class UserController {
         res.status(200).json(resultCheck);
     }
     registerGmail = async (req: Request, res: Response) => {
+        
         let userGmailFound = await userService.findUser(req.body);
         if (userGmailFound) {
             res.status(201).json(await userService.loginAhead(userGmailFound));

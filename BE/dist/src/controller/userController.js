@@ -10,12 +10,13 @@ class UserController {
         this.register = async (req, res) => {
             let userCheck = await userService_1.default.checkRegister(req.body);
             if (userCheck) {
-                res.status(400).json('User already existed!');
+                res.status(200).json('User already existed!');
             }
             else if (!req.body.username || !req.body.password) {
-                res.status(401).json('Please fill all the information!');
+                res.status(200).json('Please fill all the information!');
             }
             else {
+                console.log(req.body);
                 await userService_1.default.addUser(req.body);
                 await orderService_1.default.createNewOrder(req.body);
                 res.status(201).json('Create User Success!');
