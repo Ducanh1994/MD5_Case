@@ -60,7 +60,9 @@ class ProductService {
             where: {
                 category: { id: categoryId },
             },
-            relations: ["category"],
+            relations: {
+                category:true
+            },
         });
         return products;
     }
