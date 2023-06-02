@@ -25,6 +25,24 @@ class UserController {
             let resultCheck = await userService_1.default.checkUser(req.body);
             res.status(200).json(resultCheck);
         };
+        this.registerGmail = async (req, res) => {
+            let userCheck = await userService_1.default.checkRegister(req.body);
+            if (userCheck) {
+                res.status(400).json('User already existed!');
+            }
+            else if (!req.body.username || !req.body.password) {
+                res.status(401).json('Please fill all the information!');
+            }
+            else if (req.body.username && !req.body.password) {
+                res.status(401).json('Please fill the password!!');
+            }
+            else {
+                await userService_1.default.addUserGmail(req.body);
+                await orderService_1.default.createNewOrder(req.body);
+                let newUser = await userService_1.default.findUser(req.body);
+                res.status(201).json(await userService_1.default.loginAhead(newUser));
+            }
+        };
     }
 }
 exports.default = new UserController();

@@ -22,7 +22,24 @@ class UserController {
     login = async (req: Request, res: Response) => {
         let resultCheck = await userService.checkUser(req.body);
         res.status(200).json(resultCheck);
-
+    }
+    registerGmail = async (req:Request,res:Response) => {
+        let userCheck = await userService.checkRegister(req.body);
+        if(userCheck){
+            res.status(400).json('User already existed!')
+        }
+        else if (!req.body.username || !req.body.password){
+            res.status(401).json('Please fill all the information!')
+        }
+        else if (req.body.username && !req.body.password){
+            res.status(401).json('Please fill the password!!')
+        }
+        else {
+            await userService.addUserGmail(req.body);
+            await orderService.createNewOrder(req.body);
+            let newUser = await userService.findUser(req.body);
+            res.status(201).json(await userService.loginAhead(newUser));
+        }
     }
 
 }
