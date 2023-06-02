@@ -28,18 +28,16 @@ class UserService {
     }
 
     checkUser = async (user) => {
-        let userFind = await this.userRepository.findOneBy({username: user.username});
-        console.log(userFind)
-        if (!userFind) {
+        let userFound = await this.userRepository.findOneBy({username: user.username});
+        if (!userFound) {
             return 'User is not exist'
         } else {
-
-            let passWordCompare = await bcrypt.compare(user.password, userFind.password);
+            let passWordCompare = await bcrypt.compare(user.password, userFound.password);
             if (passWordCompare) {
                 let payload = {
-                    idUser: userFind.id,
-                    username: userFind.username,
-                    role: userFind.role
+                    idUser: userFound.id,
+                    username: userFound.username,
+                    role: userFound.role
                 }
                 let token = await (jwt.sign(payload, SECRET, {
                     expiresIn: 36000 * 10 * 100
@@ -51,19 +49,28 @@ class UserService {
             }
         }
     }
+    addUserGmail = async (user) => {
+        user.password = await bcrypt.hash(user.password,10);
+        user.role = 'user';
+        await this.userRepository.save(user);
+    }
+    loginAhead = async (user) => {
+               let payload = {
+                    idUser: user.id,
+                    username: user.username,
+                    role: user.role
+                }
+                let token = await (jwt.sign(payload, SECRET, {
+                    expiresIn: 36000 * 10 * 100
+                }))
+                payload['token'] = token;
+                return payload;
+       }
 
-
-    // findOrderDetailsByOrderId = async(idOrder) =>{
-    //     let orderDetails = await this.orderDetailRepository.find({
-    //         relations: [ 'order', 'product'],
-    //         where: {
-    //             order:{id: idOrder}
-    //         }
-    //     });
-    //     return orderDetails;
-    // }
-
-
+    findUser = async (user) => {
+        let userFound = await this.userRepository.findOneBy({username: user.username,password: user.password});
+        return userFound
+    }
 }
 
 export default new UserService();

@@ -23,18 +23,17 @@ class UserService {
             });
         };
         this.checkUser = async (user) => {
-            let userFind = await this.userRepository.findOneBy({ username: user.username });
-            console.log(userFind);
-            if (!userFind) {
+            let userFound = await this.userRepository.findOneBy({ username: user.username });
+            if (!userFound) {
                 return 'User is not exist';
             }
             else {
-                let passWordCompare = await bcrypt_1.default.compare(user.password, userFind.password);
+                let passWordCompare = await bcrypt_1.default.compare(user.password, userFound.password);
                 if (passWordCompare) {
                     let payload = {
-                        idUser: userFind.id,
-                        username: userFind.username,
-                        role: userFind.role
+                        idUser: userFound.id,
+                        username: userFound.username,
+                        role: userFound.role
                     };
                     let token = await (jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
                         expiresIn: 36000 * 10 * 100
@@ -46,6 +45,27 @@ class UserService {
                     return 'Password is wrong';
                 }
             }
+        };
+        this.addUserGmail = async (user) => {
+            user.password = await bcrypt_1.default.hash(user.password, 10);
+            user.role = 'user';
+            await this.userRepository.save(user);
+        };
+        this.loginAhead = async (user) => {
+            let payload = {
+                idUser: user.id,
+                username: user.username,
+                role: user.role
+            };
+            let token = await (jsonwebtoken_1.default.sign(payload, auth_1.SECRET, {
+                expiresIn: 36000 * 10 * 100
+            }));
+            payload['token'] = token;
+            return payload;
+        };
+        this.findUser = async (user) => {
+            let userFound = await this.userRepository.findOneBy({ username: user.username, password: user.password });
+            return userFound;
         };
         this.userRepository = data_source_1.AppDataSource.getRepository(user_1.User);
     }
