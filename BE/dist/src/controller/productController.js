@@ -66,7 +66,7 @@ class ProductController {
             }
         };
         this.findByCategoryId = async (req, res) => {
-            let categoryId = req.params.categoryId;
+            let categoryId = req.params.id;
             let products = await productService_1.default.findByCategoryId(categoryId);
             res.status(200).json(products);
         };
