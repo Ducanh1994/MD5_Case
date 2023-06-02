@@ -59,6 +59,33 @@ class ProductController {
         let orderDetails = await orderDetailService.findOrderDetails(orderId)
         res.status(200).json(orderDetails)
     }
+    findByNameProduct = async (req: Request, res: Response) => {
+        try{
+            let search = req.query.search;
+            let response = await productService.findByNameProduct(search);
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+    findByCategoryId = async (req: Request, res: Response) => {
+        let categoryId = req.params.categoryId;
+        let products = await productService.findByCategoryId(categoryId);
+        res.status(200).json(products);
+    }
+
+    findByPrice = async (req: Request, res: Response) => {
+        try{
+            let min = req.query.min;
+            let max = req.query.max;
+            let response = await productService.findByPrice(min,max);
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+
+    }
+
 }
 
 export default new ProductController();
