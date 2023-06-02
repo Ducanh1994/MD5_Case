@@ -55,6 +55,32 @@ class ProductController {
             let orderDetails = await orderDetailService_1.default.findOrderDetails(orderId);
             res.status(200).json(orderDetails);
         };
+        this.findByNameProduct = async (req, res) => {
+            try {
+                let search = req.query.search;
+                let response = await productService_1.default.findByNameProduct(search);
+                res.status(200).json(response);
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
+        };
+        this.findByCategoryId = async (req, res) => {
+            let categoryId = req.params.categoryId;
+            let products = await productService_1.default.findByCategoryId(categoryId);
+            res.status(200).json(products);
+        };
+        this.findByPrice = async (req, res) => {
+            try {
+                let min = req.query.min;
+                let max = req.query.max;
+                let response = await productService_1.default.findByPrice(min, max);
+                res.status(200).json(response);
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
+        };
     }
 }
 exports.default = new ProductController();
