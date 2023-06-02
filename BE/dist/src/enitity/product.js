@@ -24,10 +24,6 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar' }),
-    __metadata("design:type", String)
-], Product.prototype, "image", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Product.prototype, "price", void 0);
@@ -35,6 +31,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Product.prototype, "quantity", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "longtext" }),
+    __metadata("design:type", String)
+], Product.prototype, "image", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => category_1.Category, (category) => category.name),
     __metadata("design:type", category_1.Category)

@@ -1,4 +1,3 @@
-//productController.ts
 import {Request, Response} from "express";
 import productService from "../service/productService";
 import orderService from "../service/orderService";
@@ -58,9 +57,9 @@ class ProductController {
     }
 
     findByNameProduct = async (req: Request, res: Response) => {
+        let name = req.query.search;
         try{
-            let search = req.query.search;
-            let response = await productService.findByNameProduct(search);
+            let response = await productService.findByNameProduct(name);
             res.status(200).json(response)
         }catch (e) {
             res.status(500).json(e.message)
@@ -85,8 +84,9 @@ class ProductController {
         let order = await orderService.findOrderByUserId(userId);
         let orderId = order.id;
         let product = req.body;
-        await orderDetailService.addOrderDetail(orderId, product)
-        res.status(200).json("buy success!")
+        await orderDetailService.addOrderDetail(orderId, product);
+        let orderDetails = await orderDetailService.findOrderDetails(orderId)
+        res.status(200).json(orderDetails)
     }
 }
 

@@ -16,12 +16,34 @@ class OrderDetailService {
         this.orderRepository = AppDataSource.getRepository(Order);
     }
 
+    findOrder = async () => {
+        return await this.orderDetailRepository.find({
+            relations: {order: true, product: true}
+        })
+    }
+
     findOrderDetailByOrderId = async (orderId) => {
         return await this.orderDetailRepository.findOne({
             where: {orderId: orderId},
             relations: {order: true, product: true}
         })
     }
+
+    findOrderDetails = async (orderId) => {
+        return await this.orderDetailRepository.find({
+            relations: {
+                order: true,
+                product: true
+            },
+            where: {
+                order: {
+                    id: orderId,
+                    status: "unpaid"
+                },
+            },
+        })
+    }
+
     addOrderDetail = async (orderId, product) => {
         let existOrderDetails = await this.orderDetailRepository.find({
             where: {
@@ -33,6 +55,8 @@ class OrderDetailService {
                 }
             },
         });
+
+
         if (existOrderDetails[0]) {
             await this.orderDetailRepository
                 .createQueryBuilder()
@@ -54,7 +78,7 @@ class OrderDetailService {
                 order: orderId,
                 product: product.productId
             }
-            await this.orderDetailRepository.save(newOrderDetail)
+            await this.orderDetailRepository.save(newOrderDetail);
         }
     }
 
@@ -70,11 +94,24 @@ class OrderDetailService {
         })
         return orderDetails;
     }
+
     editOrder = async (orderId,userId) => {
+        let totalMoney = 0;
+        let orderDetails = await this.orderDetailRepository.find({
+            where: {
+                order: {
+                    id: orderId
+                }
+            },
+            relations: {order: true, product: true}
+        });
+        orderDetails.map(item => {
+            totalMoney += item.totalPrice
+        })
         await this.orderRepository
             .createQueryBuilder()
             .update(Order)
-            .set({ status:"paid" })
+            .set({ status:"paid",totalMoney: totalMoney })
             .where({ id: orderId })
             .execute()
         let newOrder = {
@@ -84,6 +121,29 @@ class OrderDetailService {
             user: userId
         };
         await this.orderRepository.save(newOrder);
+    }
+
+    deleteOrderDetail = async (orderId) => {
+        await this.orderDetailRepository
+            .createQueryBuilder()
+            .delete()
+            .from(OrderDetail)
+            .where({ id: orderId })
+            .execute()
+    }
+
+    getHistory = async (orderId) => {
+        return await this.orderDetailRepository.find({
+            where: {
+                order : {
+                    id: orderId,
+                    status: "paid"
+                },
+            },
+            relation: {
+                order: true, product: true
+            }
+        })
     }
 
 }

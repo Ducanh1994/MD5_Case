@@ -1,27 +1,26 @@
 import {Request, Response} from "express";
-import categoryService from "../service/CategoryService";
-import CategoryService from "../service/CategoryService";
+import productService from "../service/productService";
+import categoryService from "../service/categoryService";
+
 class CategoryController {
+    private productService;
     private categoryService;
 
     constructor() {
+        this.productService = productService;
         this.categoryService = categoryService;
     }
 
-    getAll = async (req: Request, res: Response) => {
-        let listProduct = await CategoryService.getAll();
+    findAll = async (req: Request, res: Response) => {
+        let listProduct = await this.productService.getAll();
         res.render('index', {products: listProduct});
     }
 
-    addCategory = async (req: Request, res: Response) => {
-        try {
-
-            let newCategory = await CategoryService.saveCategory(req.body)
-            res.status(200).json(newCategory);
-        } catch (e) {
-            res.status(500).json(e.message)
-        }
+    findAllCategory = async (req: Request, res: Response) => {
+        let listCategory = await categoryService.getAllCategory();
+        res.status(200).json(listCategory)
     }
+
 }
 
 export default new CategoryController();

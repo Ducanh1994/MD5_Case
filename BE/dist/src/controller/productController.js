@@ -52,9 +52,9 @@ class ProductController {
             });
         };
         this.findByNameProduct = async (req, res) => {
+            let name = req.query.search;
             try {
-                let search = req.query.search;
-                let response = await productService_1.default.findByNameProduct(search);
+                let response = await productService_1.default.findByNameProduct(name);
                 res.status(200).json(response);
             }
             catch (e) {
@@ -78,7 +78,8 @@ class ProductController {
             let orderId = order.id;
             let product = req.body;
             await orderDetailService_1.default.addOrderDetail(orderId, product);
-            res.status(200).json("buy success!");
+            let orderDetails = await orderDetailService_1.default.findOrderDetails(orderId);
+            res.status(200).json(orderDetails);
         };
     }
 }
