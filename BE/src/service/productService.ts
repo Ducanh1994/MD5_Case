@@ -1,103 +1,85 @@
-//productService.ts
-import {Product} from "../enitity/product";
-import {AppDataSource} from "../data-source";
-import {Between, Like} from "typeorm";
+import { Product } from "../enitity/product";
+import { AppDataSource } from "../data-source";
+import { Between, Like } from "typeorm";
 
 class ProductService {
     private productRepository;
 
     constructor() {
-        this.productRepository = AppDataSource.getRepository(Product)
+        this.productRepository = AppDataSource.getRepository(Product);
     }
 
     getAll = async () => {
-        let products = await this.productRepository.find({
+        return await this.productRepository.find({
             relations: {
                 category: true,
-            }
+            },
         });
-        return products;
-    }
+    };
 
     add = async (product) => {
         await this.productRepository.save(product);
-    }
+    };
+
     remove = async (id) => {
-        await this.productRepository
-            .createQueryBuilder('Product')
-            .delete()
-            .from(Product)
-            .where("id = :id", {id: id})
-            .execute()
-    }
+        await this.productRepository.delete(id);
+    };
+
     findProductById = async (id) => {
-        return await this.productRepository.findOne({
-            where: {id: id},
-            relations: {category: true}
-        })
-    }
+        return await this.productRepository.findOne(id, {
+            relations: { category: true },
+        });
+    };
 
     findByCategoryId = async (categoryId) => {
         return await this.productRepository.find({
             where: {
-                category: {id: categoryId}, // Filter based on the category ID
+                category: { id: categoryId },
             },
-            relations: ["category"], // Include the "category" relationship
+            relations: ["category"],
         });
-    }
+    };
 
-    async  findByNameProduct(name) {
-
-        let product = await this.productRepository.find({
+    findByNameProduct = async (name) => {
+        const products = await this.productRepository.find({
             where: {
-                name: Like(`%${name}%`)
+                name: Like(`%${name}%`),
             },
             relations: {
                 category: true,
             },
         });
 
-        if(product.length == 0){
+        if (products.length === 0) {
             return "Can not find by name";
         }
-        return product;
-    }
 
-    findByPrice = async (min,max)=> {
-        let a = '';
+        return products;
+    };
 
-        if(!min && !max){
-            a=''
-        }else {
-            a = `where p.price >=${min} and p.price <= ${max}`;
-        }
-        if(!min){
-            a = `where p.price <= ${max}`;
-        }
-        if(!max){
-            a = `where p.price >= ${min}`;
+    findByPrice = async (min, max) => {
+        let query = this.productRepository.createQueryBuilder('product');
+
+        if (min && max) {
+            query = query.where("product.price >= :min AND product.price <= :max", { min, max });
+        } else if (min) {
+            query = query.where("product.price >= :min", { min });
+        } else if (max) {
+            query = query.where("product.price <= :max", { max });
         }
 
-        let product = await this.productRepository.findBy({
-            price: Between(min,max)
-        });
-        if(!product){
-            return "Can not find by name";
+        const products = await query.getMany();
+
+        if (products.length === 0) {
+            return "Can not find by price";
         }
-        return product;
-    }
+
+        return products;
+    };
 
     editProduct = async (id, product) => {
-        return await this.productRepository
-            .createQueryBuilder()
-            .update(Product)
-            .set({
-                name: product.name, price: product.price, quantity: product.quantity, image: product.image,
-                category: product.category
-            })
-            .where("id = :id", {id: id})
-            .execute()
-    }
+        return await this.productRepository.update(id, product);
+    };
 }
 
 export default new ProductService();
