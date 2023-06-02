@@ -9,52 +9,49 @@ const orderDetailService_1 = __importDefault(require("../service/orderDetailServ
 class ProductController {
     constructor() {
         this.findAll = async (req, res) => {
-            let listProduct = await productService_1.default.getAll();
+            const listProduct = await productService_1.default.getAll();
             res.status(200).json(listProduct);
         };
         this.addProduct = async (req, res) => {
             await productService_1.default.add(req.body);
             if (!req.body.name) {
-                res.status(400).json({
-                    message: 'name missing'
-                });
-                res.end();
-            }
-            else {
-                res.status(201).json({
-                    message: 'OK'
+                return res.status(400).json({
+                    message: "name missing",
                 });
             }
+            res.status(201).json({
+                message: "OK",
+            });
         };
-        this.remove = (req, res) => {
-            let id = req.params.id;
-            productService_1.default.remove(id);
+        this.remove = async (req, res) => {
+            const id = req.params.id;
+            await productService_1.default.remove(id);
             res.status(200).json({
-                message: 'Delete success'
+                message: "Delete success",
             });
         };
         this.findProductById = async (req, res) => {
-            let id = req.params.id;
-            let product = await productService_1.default.findProductById(id);
+            const id = req.params.id;
+            const product = await productService_1.default.findProductById(id);
             res.status(200).json(product);
         };
         this.findByCategoryId = async (req, res) => {
-            let categoryId = req.params.categoryId;
-            let products = await productService_1.default.findByCategoryId(categoryId);
+            const categoryId = req.params.categoryId;
+            const products = await productService_1.default.findByCategoryId(categoryId);
             res.status(200).json(products);
         };
         this.editProduct = async (req, res) => {
-            let id = req.params.id;
-            let product = req.body;
+            const id = req.params.id;
+            const product = req.body;
             await productService_1.default.editProduct(id, product);
             res.status(200).json({
-                message: 'Edit success'
+                message: "Edit success",
             });
         };
         this.findByNameProduct = async (req, res) => {
-            let name = req.query.search;
+            const name = req.query.search;
             try {
-                let response = await productService_1.default.findByNameProduct(name);
+                const response = await productService_1.default.findByNameProduct(name);
                 res.status(200).json(response);
             }
             catch (e) {
@@ -63,9 +60,9 @@ class ProductController {
         };
         this.findByPrice = async (req, res) => {
             try {
-                let min = req.query.min;
-                let max = req.query.max;
-                let response = await productService_1.default.findByPrice(min, max);
+                const min = req.query.min;
+                const max = req.query.max;
+                const response = await productService_1.default.findByPrice(min, max);
                 res.status(200).json(response);
             }
             catch (e) {
@@ -73,12 +70,12 @@ class ProductController {
             }
         };
         this.buyProduct = async (req, res) => {
-            let userId = req['decode'].idUser;
-            let order = await orderService_1.default.findOrderByUserId(userId);
-            let orderId = order.id;
-            let product = req.body;
+            const userId = req['decode'].idUser;
+            const order = await orderService_1.default.findOrderByUserId(userId);
+            const orderId = order.id;
+            const product = req.body;
             await orderDetailService_1.default.addOrderDetail(orderId, product);
-            let orderDetails = await orderDetailService_1.default.findOrderDetails(orderId);
+            const orderDetails = await orderDetailService_1.default.findOrderDetails(orderId);
             res.status(200).json(orderDetails);
         };
     }
